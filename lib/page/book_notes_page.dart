@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:anx_reader/service/notes/export_notes.dart';
 import 'package:anx_reader/widgets/tips/notes_tips.dart';
 import 'package:anx_reader/dao/book_note.dart';
@@ -9,6 +8,8 @@ import 'package:anx_reader/models/book_note.dart';
 import 'package:anx_reader/page/book_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../generated/l10n.dart';
 
 
 class BookNotesPage extends StatefulWidget {
@@ -165,7 +166,7 @@ Row operators(BuildContext context, Book book) {
   }
 
   return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-    operateButton(context, const Icon(Icons.details), context.notesPageDetail,
+    operateButton(context, const Icon(Icons.details), S.of(context).notes_page_detail,
         () {
       Navigator.push(
         context,
@@ -175,7 +176,7 @@ Row operators(BuildContext context, Book book) {
       );
     }),
     // operateButton(context, Icons.search, 'Search', () {}),
-    operateButton(context, const Icon(Icons.ios_share), context.notesPageExport,
+    operateButton(context, const Icon(Icons.ios_share), S.of(context).notes_page_export,
         () {
       handleExportNotes();
     }),
@@ -220,7 +221,7 @@ Widget notesStatistic(BuildContext context, int numberOfNotes) {
             style: digitStyle,
           ),
           TextSpan(
-            text: ' ${context.notesNotes}',
+            text: ' ${S.of(context).notes_notes}',
             style: textStyle,
           ),
         ],

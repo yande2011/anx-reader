@@ -1,10 +1,11 @@
 import 'package:anx_reader/config/shared_preference_provider.dart';
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:anx_reader/page/settings_page/log_page.dart';
 import 'package:anx_reader/widgets/settings/settings_title.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
+
+import '../../generated/l10n.dart';
 
 class AdvancedSetting extends StatelessWidget {
   const AdvancedSetting(
@@ -23,7 +24,7 @@ class AdvancedSetting extends StatelessWidget {
   Widget build(BuildContext context) {
     return settingsTitle(
         icon: const Icon(Icons.shield_outlined),
-        title: context.settingsAdvanced,
+        title: S.of(context).settings_advanced,
         isMobile: isMobile,
         id: id,
         selectedIndex: selectedIndex,
@@ -45,14 +46,14 @@ class _SubAdvancedSettingsState extends State<SubAdvancedSettings> {
   @override
   Widget build(BuildContext context) {
     return settingsBody(
-      title: context.settingsAdvanced,
+      title: S.of(context).settings_advanced,
       isMobile: widget.isMobile,
       sections: [
         SettingsSection(
-          title: Text(context.settingsAdvancedLog),
+          title: Text(S.of(context).settings_advanced_log),
           tiles: [
             SettingsTile.switchTile(
-              title: Text(context.settingsAdvancedClearLogWhenStart),
+              title: Text(S.of(context).settings_advanced_clear_log_when_start),
               leading: const Icon(Icons.delete_forever_outlined),
               initialValue: Prefs().clearLogWhenStart,
               onToggle: (value) {
@@ -62,7 +63,7 @@ class _SubAdvancedSettingsState extends State<SubAdvancedSettings> {
             ),
             SettingsTile.navigation(
                 leading: const Icon(Icons.bug_report),
-                title: Text(context.settingsAdvancedLog),
+                title: Text(S.of(context).settings_advanced_log),
                 onPressed: onLogPressed),
           ],
         ),

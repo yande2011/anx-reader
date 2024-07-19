@@ -342,6 +342,7 @@ String generateIndexHtml(
             chapterHref: rendition.currentLocation().start.href,
           };
           window.flutter_inappwebview.callHandler('getCurrentInfo', currentInfo);
+          window.flutter_inappwebview.callHandler('onRelocated');
         }
         
     // render book

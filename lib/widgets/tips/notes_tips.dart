@@ -1,5 +1,6 @@
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:flutter/material.dart';
+
+import '../../generated/l10n.dart';
 
 class NotesTips extends StatelessWidget {
   const NotesTips({super.key});
@@ -25,12 +26,12 @@ class NotesTips extends StatelessWidget {
                   color: Colors.grey)),
           const SizedBox(height: 50),
           Text(
-            context.notesTips1,
+            S.of(context).notes_tips_1,
             style: textStyleBig,
           ),
           const SizedBox(height: 10),
           Text(
-            context.notesTips2,
+            S.of(context).notes_tips_2,
             style: textStyle,
           ),
         ],

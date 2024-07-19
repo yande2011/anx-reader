@@ -1,9 +1,10 @@
 
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:anx_reader/widgets/settings/settings_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
+
+import '../../generated/l10n.dart';
 
 class BookshelfSettings extends StatelessWidget {
   const BookshelfSettings({super.key});
@@ -12,7 +13,7 @@ class BookshelfSettings extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: const Icon(Icons.palette),
-      title: Text(context.settingsAppearance),
+      title: Text(S.of(context).settings_appearance),
       trailing: const Icon(Icons.chevron_right),
       onTap: () {
         Navigator.push(
@@ -31,7 +32,7 @@ class SubBookshelfSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: settingsAppBar(context.settingsAppearance, context),
+      appBar: settingsAppBar(S.of(context).settings_appearance, context),
       body: SettingsList(
         sections: [
           SettingsSection(

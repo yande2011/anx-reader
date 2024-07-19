@@ -1,4 +1,3 @@
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:anx_reader/page/home_page/bookshelf_page.dart';
 import 'package:anx_reader/page/home_page/notes_page.dart';
 import 'package:anx_reader/page/home_page/settings_page.dart';
@@ -7,6 +6,8 @@ import 'package:anx_reader/utils/webdav/common.dart';
 import 'package:anx_reader/config/shared_preference_provider.dart';
 import 'package:anx_reader/utils/toast/common.dart';
 import 'package:flutter/material.dart';
+
+import '../generated/l10n.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -90,10 +91,10 @@ class _HomePageState extends State<HomePage> {
 
   List<Map<String, dynamic>> _navBarItems() {
     return [
-      {'icon': Icons.book, 'label': context.navBarBookshelf},
-      {'icon': Icons.show_chart, 'label': context.navBarStatistics},
-      {'icon': Icons.note, 'label': context.navBarNotes},
-      {'icon': Icons.settings, 'label': context.navBarSettings},
+      {'icon': Icons.book, 'label': S.of(context).navBarBookshelf},
+      {'icon': Icons.show_chart, 'label':  S.of(context).navBarStatistics},
+      {'icon': Icons.note, 'label':  S.of(context).navBarNotes},
+      {'icon': Icons.settings, 'label':  S.of(context).navBarSettings},
     ];
   }
 

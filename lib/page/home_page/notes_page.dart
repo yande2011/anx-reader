@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:anx_reader/dao/book.dart';
 import 'package:anx_reader/dao/book_note.dart';
 import 'package:anx_reader/dao/reading_time.dart';
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:anx_reader/models/book.dart';
 import 'package:anx_reader/page/book_notes_page.dart';
 import 'package:anx_reader/utils/convert_seconds.dart';
 import 'package:anx_reader/widgets/tips/notes_tips.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../generated/l10n.dart';
 
 class NotesPage extends StatefulWidget {
   const NotesPage({super.key});
@@ -106,7 +107,7 @@ class _NotesPageState extends State<NotesPage> {
                             style: digitStyle,
                           ),
                           TextSpan(
-                            text: ' ${context.notesNotesAcross} ',
+                            text: ' ${S.of(context).notes_notes_across} ',
                             style: textStyle,
                           ),
                         ],
@@ -121,7 +122,7 @@ class _NotesPageState extends State<NotesPage> {
                             style: digitStyle,
                           ),
                           TextSpan(
-                            text: ' ${context.notesBooks}',
+                            text: ' ${S.of(context).notes_books}',
                             style: textStyle,
                           ),
                         ]))
@@ -216,7 +217,7 @@ class _NotesPageState extends State<NotesPage> {
                                     style: numberStyle,
                                   ),
                                   TextSpan(
-                                    text: ' ${context.notesNotes}',
+                                    text: ' ${S.of(context).notes_notes}',
                                     style: numberText,
                                   ),
                                 ],

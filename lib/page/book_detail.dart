@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:anx_reader/dao/book.dart';
 import 'package:anx_reader/dao/reading_time.dart';
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:anx_reader/models/book.dart';
 import 'package:anx_reader/models/reading_time.dart';
 import 'package:anx_reader/service/book.dart';
@@ -12,6 +11,8 @@ import 'package:anx_reader/utils/log/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../generated/l10n.dart';
 
 class BookDetail extends StatefulWidget {
   const BookDetail({super.key, required this.book, required this.onRefresh});
@@ -329,7 +330,7 @@ class _BookDetailState extends State<BookDetail> {
                   children: [
                     const Icon(Icons.save),
                     const SizedBox(width: 5),
-                    Text(context.bookDetailSave),
+                    Text(S.of(context).bookDetailSave),
                   ],
                 ),
                 onPressed: () {
@@ -345,7 +346,7 @@ class _BookDetailState extends State<BookDetail> {
                   children: [
                     const Icon(Icons.edit),
                     const SizedBox(width: 5),
-                    Text(context.bookDetailEdit),
+                    Text(S.of(context).bookDetailEdit),
                   ],
                 ),
                 onPressed: () {
@@ -401,7 +402,7 @@ class _BookDetailState extends State<BookDetail> {
               ),
             ),
             TextSpan(
-              text: context.bookDetailNthBook,
+              text: S.of(context).bookDetailNthBook,
               style: const TextStyle(
                 fontSize: 15,
                 color: Colors.grey,
@@ -468,7 +469,7 @@ class _BookDetailState extends State<BookDetail> {
                     style: digitStyle,
                   ),
                   TextSpan(
-                    text: ' ${context.commonHours} ',
+                    text: ' ${S.of(context).common_hours} ',
                     style: textStyle,
                   ),
                   TextSpan(
@@ -476,7 +477,7 @@ class _BookDetailState extends State<BookDetail> {
                     style: digitStyle,
                   ),
                   TextSpan(
-                    text: ' ${context.commonMinutes}',
+                    text: ' ${S.of(context).common_minutes}',
                     style: textStyle,
                   ),
                 ],
@@ -509,12 +510,12 @@ class _BookDetailState extends State<BookDetail> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${context.bookDetailImportDate}${widget.book.createTime.toString().substring(0, 10)}',
+                  '${S.of(context).bookDetailImportDate}${widget.book.createTime.toString().substring(0, 10)}',
                   style: textStyle,
                 ),
                 const Divider(),
                 Text(
-                  '${context.bookDetailLastReadDate}${widget.book.updateTime.toString().substring(0, 10)}',
+                  '${S.of(context).bookDetailLastReadDate}${widget.book.updateTime.toString().substring(0, 10)}',
                   style: textStyle,
                 ),
                 const Divider(),

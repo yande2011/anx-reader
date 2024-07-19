@@ -1,11 +1,25 @@
 import 'dart:convert';
 import 'dart:core';
 
+import 'package:flutter/material.dart';
+
 class ReadTheme {
   int? id;
   String backgroundColor;
   String textColor;
   String backgroundImagePath;
+
+  static ReadTheme dark = ReadTheme(
+      id: 1,
+      backgroundColor: "ff040404",
+      textColor: "fffeffeb",
+      backgroundImagePath: '');
+
+  static ReadTheme light = ReadTheme(
+      id: 2,
+      backgroundColor: 'fffbfbf3',
+      textColor: 'ff343434',
+      backgroundImagePath: '');
 
   ReadTheme(
       {this.id,

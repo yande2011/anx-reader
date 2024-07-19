@@ -3,17 +3,15 @@ import 'package:anx_reader/dao/database.dart';
 import 'package:anx_reader/page/home_page.dart';
 import 'package:anx_reader/page/home_page/notes_page.dart';
 import 'package:anx_reader/service/book_player/book_player_server.dart';
-import 'package:anx_reader/utils/check_update.dart';
 import 'package:anx_reader/utils/error/common.dart';
 import 'package:anx_reader/utils/get_base_path.dart';
 import 'package:anx_reader/utils/log/common.dart';
 import 'package:anx_reader/utils/webdav/common.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'generated/l10n.dart';
 
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -28,7 +26,7 @@ Future<void> main() async {
   await DBHelper().initDB();
   Server().start();
   initBasePath();
-  checkUpdate(false);
+  // checkUpdate(false);
 
   runApp(const MyApp());
 }
@@ -77,10 +75,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       child: Consumer<Prefs>(
         builder: (context, prefsNotifier, child) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             navigatorKey: navigatorKey,
             locale: prefsNotifier.locale,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
             title: 'Anx',
             themeMode: prefsNotifier.themeMode,
             theme: ThemeData(

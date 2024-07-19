@@ -1,10 +1,11 @@
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:anx_reader/utils/webdav/common.dart';
 import 'package:anx_reader/config/shared_preference_provider.dart';
 import 'package:anx_reader/main.dart';
 import 'package:anx_reader/utils/toast/common.dart';
 import 'package:flutter/material.dart';
 import 'package:webdav_client/webdav_client.dart';
+
+import '../../generated/l10n.dart';
 
 
 Future<Map<String, dynamic>> testWebdavInfo(Map webdavInfo) async {
@@ -39,7 +40,7 @@ Future<void> testWebdav(Map webdavInfo) async {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text(context.commonOk),
+          child: Text( S.of(context).common_ok),
         ),
       ],
     );
@@ -52,15 +53,15 @@ Future<void> testWebdav(Map webdavInfo) async {
       context: context,
       builder: (context) {
         return buildAlertDialog(
-            context.commonSuccess, context.webdavConnectionSuccess);
+            S.of(context).common_success,  S.of(context).webdav_connection_success);
       },
     );
   } else {
     showDialog(
       context: context,
       builder: (context) {
-        return buildAlertDialog(context.commonFailed,
-            '${context.webdavConnectionFailed}\n${result['error']}');
+        return buildAlertDialog( S.of(context).common_failed,
+            '${ S.of(context).webdav_connection_failed}\n${result['error']}');
       },
     );
   }
@@ -76,10 +77,10 @@ Future<bool> testEnableWebdav() async {
     if (result['status']) {
       return true;
     } else {
-      AnxToast.show(context.webdavConnectionFailed);
+      AnxToast.show( S.of(context).webdav_connection_failed);
     }
   } else {
-    AnxToast.show(context.webdavSetInfoFirst);
+    AnxToast.show( S.of(context).webdav_set_info_first);
   }
   return false;
 }
@@ -90,7 +91,7 @@ void chooseDirection() {
       context: navigatorKey.currentContext!,
       builder: (context) {
         return SimpleDialog(
-          title: Text(context.webdavChooseSources),
+          title: Text( S.of(context).webdav_choose_Sources),
           children: [
             SimpleDialogOption(
               onPressed: () async {
@@ -99,7 +100,7 @@ void chooseDirection() {
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6),
-                child: Text(context.webdavUpload),
+                child: Text( S.of(context).webdav_upload),
               ),
             ),
             SimpleDialogOption(
@@ -109,7 +110,7 @@ void chooseDirection() {
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6),
-                child: Text(context.webdavDownload),
+                child: Text( S.of(context).webdav_download),
               ),
             ),
           ],

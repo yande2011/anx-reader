@@ -1,8 +1,9 @@
 import 'dart:async';
 
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:anx_reader/page/book_player/epub_player.dart';
 import 'package:flutter/material.dart';
+
+import '../../generated/l10n.dart';
 
 
 class ProgressWidget extends StatefulWidget {
@@ -36,17 +37,17 @@ class _ProgressWidgetState extends State<ProgressWidget> {
     return Container(
       child: Column(
         children: [
-          const SizedBox(height: 10),
-          Text(
-            widget.epubPlayerKey.currentState!.chapterTitle,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 20,
-              fontFamily: 'SourceHanSerif',
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const Divider(),
+          // const SizedBox(height: 10),
+          // Text(
+          //   widget.epubPlayerKey.currentState!.chapterTitle,
+          //   textAlign: TextAlign.center,
+          //   style: const TextStyle(
+          //     fontSize: 20,
+          //     fontFamily: 'SourceHanSerif',
+          //     fontWeight: FontWeight.bold,
+          //   ),
+          // ),
+          // const Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -88,26 +89,25 @@ class _ProgressWidgetState extends State<ProgressWidget> {
               ),
             ],
           ),
-          Row(
-            children: [
-              ProgressDisplayer(
-                mainText: widget.epubPlayerKey.currentState!.chapterCurrentPage
-                    .toString(),
-                subText: context.readingPageCurrentPage,
-              ),
-              ProgressDisplayer(
-                mainText: widget.epubPlayerKey.currentState!.chapterTotalPage
-                    .toString(),
-                subText: context.readingPageChapterPages,
-              ),
-              ProgressDisplayer(
-                mainText: (widget.epubPlayerKey.currentState!.progress * 100)
-                    .toStringAsFixed(2),
-                subText: '%',
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
+          // Row(
+          //   children: [
+          //     ProgressDisplayer(
+          //       mainText: widget.epubPlayerKey.currentState!.chapterCurrentPage
+          //           .toString(),
+          //       subText:  S.of(context).reading_page_current_page,
+          //     ),
+          //     ProgressDisplayer(
+          //       mainText: widget.epubPlayerKey.currentState!.chapterTotalPage
+          //           .toString(),
+          //       subText:  S.of(context).reading_page_chapter_pages,
+          //     ),
+          //     ProgressDisplayer(
+          //       mainText: (widget.epubPlayerKey.currentState!.progress * 100)
+          //           .toStringAsFixed(2),
+          //       subText: '%',
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );
@@ -129,17 +129,9 @@ class ProgressDisplayer extends StatelessWidget {
     return Expanded(
       child: Container(
         // width: 50,
-        child: Column(
+        child: Row(
           children: [
-            Text(
-              mainText,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 20,
-                fontFamily: 'SourceHanSerif',
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            const SizedBox(width: 10),
             Text(
               subText,
               textAlign: TextAlign.center,
@@ -148,7 +140,17 @@ class ProgressDisplayer extends StatelessWidget {
                 fontFamily: 'SourceHanSerif',
                 fontWeight: FontWeight.w300,
               ),
-            )
+            ),
+            const SizedBox(width: 10),
+            Text(
+              mainText,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 12,
+                fontFamily: 'SourceHanSerif',
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
       ),

@@ -1,6 +1,7 @@
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:anx_reader/widgets/statistic/week_month_year_widget.dart';
 import 'package:flutter/material.dart';
+
+import '../../generated/l10n.dart';
 
 
 enum ChartMode { week, month, year }
@@ -30,11 +31,11 @@ class _ChartCardState extends State<ChartCard> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _chartModeButton(ChartMode.week, context.statisticWeek),
+                  _chartModeButton(ChartMode.week,  S.of(context).statistic_week),
                   const SizedBox(width: 10),
-                  _chartModeButton(ChartMode.month, context.statisticMonth),
+                  _chartModeButton(ChartMode.month,  S.of(context).statistic_month),
                   const SizedBox(width: 10),
-                  _chartModeButton(ChartMode.year, context.statisticYear),
+                  _chartModeButton(ChartMode.year,  S.of(context).statistic_year),
                 ],
               ),
             ),

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:anx_reader/dao/book.dart';
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:anx_reader/main.dart';
 import 'package:anx_reader/models/book.dart';
 import 'package:anx_reader/utils/get_base_path.dart';
@@ -11,6 +10,8 @@ import 'package:anx_reader/utils/import_book.dart';
 import 'package:anx_reader/utils/toast/common.dart';
 import 'package:epubx/epubx.dart';
 import 'package:flutter/material.dart';
+
+import '../generated/l10n.dart';
 
 
 Future<Book> importBook(File file) async {
@@ -45,7 +46,7 @@ Future<Book> importBook(File file) async {
         createTime: DateTime.now(),
         updateTime: DateTime.now());
     book.id = await insertBook(book);
-    AnxToast.show(navigatorKey.currentContext!.serviceImportSuccess);
+    AnxToast.show(S.of(navigatorKey.currentContext!).service_import_success);
     return book;
   } catch (e) {
     AnxToast.show(

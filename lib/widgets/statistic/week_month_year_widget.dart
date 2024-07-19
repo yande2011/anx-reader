@@ -1,7 +1,8 @@
 import 'package:anx_reader/dao/reading_time.dart';
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:anx_reader/widgets/statistic/statistic_chart.dart';
 import 'package:flutter/material.dart';
+
+import '../../generated/l10n.dart';
 
 
 class YearWidget extends StatelessWidget {
@@ -79,13 +80,13 @@ class WeekWidget extends StatelessWidget {
           return StatisticChart(
             readingTime: snapshot.data!,
             xLabels: [
-              context.statisticMonday,
-              context.statisticTuesday,
-              context.statisticWednesday,
-              context.statisticThursday,
-              context.statisticFriday,
-              context.statisticSaturday,
-              context.statisticSunday,
+              S.of(context).statistic_monday,
+              S.of(context).statistic_tuesday,
+              S.of(context).statistic_wednesday,
+              S.of(context).statistic_thursday,
+              S.of(context).statistic_friday,
+              S.of(context).statistic_saturday,
+              S.of(context).statistic_sunday,
             ],
           );
         } else {

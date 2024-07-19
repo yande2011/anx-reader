@@ -1,7 +1,8 @@
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:anx_reader/utils/webdav/common.dart';
 import 'package:anx_reader/main.dart';
 import 'package:flutter/material.dart';
+
+import '../../generated/l10n.dart';
 
 
 void showWebdavStatus() {
@@ -45,8 +46,8 @@ class _SyncStatusDialogState extends State<SyncStatusDialog> {
   @override
   Widget build(BuildContext context) {
     String dir = direction == SyncDirection.upload
-        ? context.commonUploading
-        : context.commonDownloading;
+        ?  S.of(context).common_uploading
+        :  S.of(context).common_downloading;
     return AlertDialog(
       title: Text(dir),
       content: Column(
@@ -74,7 +75,7 @@ class _SyncStatusDialogState extends State<SyncStatusDialog> {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text(context.commonOk),
+          child: Text( S.of(context).common_ok),
         ),
       ],
     );

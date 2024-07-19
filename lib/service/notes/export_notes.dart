@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:anx_reader/dao/book.dart';
 import 'package:anx_reader/dao/book_note.dart';
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:anx_reader/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
+import '../../generated/l10n.dart';
 import '../../utils/get_download_path.dart';
 import '../../utils/toast/common.dart';
 
@@ -30,7 +30,7 @@ Future<void> exportNotes(int bookId, ExportType exportType) async {
         return '${note.chapter}\n\t${note.content}';
       }).join('\n');
       await Clipboard.setData(ClipboardData(text: notes));
-      AnxToast.show(context.notesPageCopied);
+      AnxToast.show( S.of(context).notes_page_copied);
       break;
 
     case ExportType.md:
@@ -45,7 +45,7 @@ Future<void> exportNotes(int bookId, ExportType exportType) async {
       }
 
       await file.writeAsString(notes);
-      AnxToast.show('${context.notesPageExportedTo} $savePath');
+      AnxToast.show('${ S.of(context).notes_page_exported_to} $savePath');
       break;
 
     case ExportType.txt:
@@ -54,7 +54,7 @@ Future<void> exportNotes(int bookId, ExportType exportType) async {
       }).join('');
       final file = File('$savePath/${book.title}.txt');
       await file.writeAsString(notes);
-      AnxToast.show('${context.notesPageExportedTo} $savePath');
+      AnxToast.show('${ S.of(context).notes_page_exported_to} $savePath');
       break;
   }
 }

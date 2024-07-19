@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:anx_reader/config/shared_preference_provider.dart';
 import 'package:anx_reader/dao/reading_time.dart';
@@ -9,17 +10,18 @@ import 'package:anx_reader/models/book_style.dart';
 import 'package:anx_reader/models/read_theme.dart';
 import 'package:anx_reader/page/book_player/epub_player.dart';
 import 'package:anx_reader/utils/ui/status_bar.dart';
-import 'package:anx_reader/widgets/reading_page/notes_widget.dart';
+import 'package:anx_reader/widgets/reading_page/book_drawer.dart';
 import 'package:anx_reader/models/reading_time.dart';
 import 'package:anx_reader/models/toc_item.dart';
 import 'package:anx_reader/utils/generate_index_html.dart';
 import 'package:anx_reader/widgets/reading_page/progress_widget.dart';
 import 'package:anx_reader/widgets/reading_page/style_widget.dart';
 import 'package:anx_reader/widgets/reading_page/theme_widget.dart';
-import 'package:anx_reader/widgets/reading_page/toc_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
+import '../generated/l10n.dart';
+import '../widgets/settings/BrightnessDialog.dart';
 
 class ReadingPage extends StatefulWidget {
   final Book book;
@@ -45,6 +47,9 @@ class ReadingPageState extends State<ReadingPage> with WidgetsBindingObserver {
   final _epubPlayerKey = GlobalKey<EpubPlayerState>();
   final Stopwatch _readTimeWatch = Stopwatch();
   Timer? _awakeTimer;
+  bool _showAppAndBottomBar = false;
+  int bookDrawIndex = 0;
+
 
   @override
   void initState() {
@@ -104,11 +109,37 @@ class ReadingPageState extends State<ReadingPage> with WidgetsBindingObserver {
   }
 
   void showOrHideAppBarAndBottomBar(bool show) {
-    if (show) {
-      showBottomBar(context);
-    } else {
-      Navigator.pop(context);
-    }
+
+      // showBottomBar(context);
+      setState(() {
+        readProgress = _epubPlayerKey.currentState!.progress;
+        _showAppAndBottomBar = !_showAppAndBottomBar;
+      });
+
+  }
+
+  void _showDrawer(BuildContext context, int index) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return DefaultTabController(
+            length: 2,
+            child: BookDrawer(tocItems: _tocItems, epubPlayerKey: _epubPlayerKey, showOrHideAppBarAndBottomBar: showOrHideAppBarAndBottomBar,currentPage: index, book: _book,),
+          );
+        },
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var begin = Offset(-1.0, 0.0);
+          var end = Offset.zero;
+          var curve = Curves.ease;
+          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
+          );
+        },
+      ),
+    );
   }
 
   Future<void> tocHandler() async {
@@ -116,17 +147,15 @@ class ReadingPageState extends State<ReadingPage> with WidgetsBindingObserver {
     setState(() {
       _tocItems =
           (json.decode(toc) as List).map((i) => TocItem.fromJson(i)).toList();
-      _currentPage = TocWidget(
-          tocItems: _tocItems,
-          epubPlayerKey: _epubPlayerKey,
-          hideAppBarAndBottomBar: showOrHideAppBarAndBottomBar);
+      _showDrawer(context, 0);
     });
   }
 
   void noteHandler() {
-    setState(() {
-      _currentPage = ReadingNotes(book: _book);
-    });
+    // setState(() {
+    //   _currentPage = ReadingNotes(book: _book);
+    // });
+    _showDrawer(context, 1);
   }
 
   void progressHandler() {
@@ -138,6 +167,28 @@ class ReadingPageState extends State<ReadingPage> with WidgetsBindingObserver {
         readProgress: readProgress,
       );
     });
+  }
+
+  Future<void> changeTheme(BuildContext context) async {
+    List<ReadTheme> themes = await selectThemes();
+    ThemeMode current = Theme.of(context).brightness == Brightness.dark
+        ? ThemeMode.dark
+        : ThemeMode.light;
+    if (current == ThemeMode.dark) {
+      await Prefs().saveThemeModeToPrefs("light");
+    } else {
+      await Prefs().saveThemeModeToPrefs("dark");
+    }
+    setState(() {
+      if (current == ThemeMode.dark) {
+        _readTheme = themes[0];
+      } else {
+        _readTheme = themes[1];
+      }
+      Prefs().saveReadThemeToPrefs(_readTheme);
+      _epubPlayerKey.currentState!.changeTheme(_readTheme);
+    });
+
   }
 
   Future<void> themeHandler(StateSetter modalSetState) async {
@@ -155,12 +206,43 @@ class ReadingPageState extends State<ReadingPage> with WidgetsBindingObserver {
     });
   }
 
+  void showStyleDialog(BuildContext context, GlobalKey<EpubPlayerState> epubPlayerKey) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(S.of(context).reading_page_style),
+          content: SingleChildScrollView(
+            child: StyleWidget(epubPlayerKey: epubPlayerKey),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(S.of(context).common_ok),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   Future<void> styleHandler() async {
-    setState(() {
-      _currentPage = StyleWidget(
-        epubPlayerKey: _epubPlayerKey,
-      );
-    });
+    // setState(() {
+    //   _currentPage = StyleWidget(
+    //     epubPlayerKey: _epubPlayerKey,
+    //   );
+    // });
+    showStyleDialog(context, _epubPlayerKey);
+  }
+
+  void showBrightnessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return BrightnessDialog();
+      },
+    );
   }
 
   void showBottomBar(BuildContext context) {
@@ -253,6 +335,124 @@ class ReadingPageState extends State<ReadingPage> with WidgetsBindingObserver {
                 bookId: _book.id,
                 showOrHideAppBarAndBottomBar: showOrHideAppBarAndBottomBar,
               ),
+              if (_showAppAndBottomBar)
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 60,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey[800] : Colors.blueAccent,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        IconButton(onPressed: () {
+                          Navigator.pop(context);
+                        }, icon: const Icon(Icons.arrow_back_outlined, color: Colors.white,)),
+                        Text(_book.title, style: const TextStyle(color: Colors.white),),
+                        IconButton(onPressed: (){}, icon: const Icon(Icons.more_vert, color: Colors.white,))
+                      ]
+                    )
+                  )
+                )
+              ,
+
+              if (_showAppAndBottomBar)
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 120,
+                    color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.grey[800] : Colors.grey[100],
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ProgressWidget(epubPlayerKey: _epubPlayerKey, showOrHideAppBarAndBottomBar: showOrHideAppBarAndBottomBar, readProgress: readProgress),
+                        // Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+                        //   IconButton(
+                        //     icon: const Icon(Icons.keyboard_arrow_left),
+                        //     onPressed: () {
+                        //       progressHandler();
+                        //     },
+                        //   ),
+                        //   Slider(
+                        //     value: 20,
+                        //     min: 0.0,
+                        //     max: 100.0,
+                        //     divisions: 100,
+                        //     label: '20%',
+                        //     onChanged: (double value) {
+                        //       setState(() {
+                        //       });
+                        //     },
+                        //   ),
+                        //   IconButton(
+                        //     icon: const Icon(Icons.keyboard_arrow_right),
+                        //     onPressed: () {
+                        //       progressHandler();
+                        //     },
+                        //   ),
+                        // ],),
+                        Divider(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Icons.dark_mode
+                                    : Icons.light_mode,
+                              ),
+                              onPressed: ()  {
+                                // 切换主题的逻辑
+                                changeTheme(context);
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.keyboard_voice),
+                              onPressed: () {
+                                // 切换主题的逻辑
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.toc),
+                              onPressed: () {
+                                tocHandler();
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.bookmark),
+                              onPressed: () {
+                                noteHandler();
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.brightness_high),
+                              onPressed: () {
+                                showBrightnessDialog(context);
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.format_size),
+                              onPressed: () {
+                                styleHandler();
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.power_settings_new_sharp),
+                              onPressed: () {
+                                exit(0);
+                              }
+                            )
+                          ]
+                        )
+                      ]
+                    )
+                  )
+                )
             ],
           ),
         ),

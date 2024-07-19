@@ -1,9 +1,10 @@
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:anx_reader/main.dart';
 import 'package:anx_reader/widgets/reading_page/more_settings/font_settings.dart';
 import 'package:anx_reader/widgets/reading_page/more_settings/theme_settings.dart';
 import 'package:contentsize_tabbarview/contentsize_tabbarview.dart';
 import 'package:flutter/material.dart';
+
+import '../../../generated/l10n.dart';
 
 enum ReadingSettings { theme, style }
 
@@ -26,8 +27,8 @@ void showMoreSettings(ReadingSettings settings) {
             TabBar(
               controller: tabController,
               tabs: [
-                Tab(text: context.readingPageTheme),
-                Tab(text: context.readingPageStyle),
+                Tab(text:  S.of(context).reading_page_theme),
+                Tab(text:  S.of(context).reading_page_style),
               ],
             ),
             const Divider(height: 0),

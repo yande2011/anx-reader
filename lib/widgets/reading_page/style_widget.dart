@@ -1,10 +1,11 @@
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:anx_reader/widgets/reading_page/widget_title.dart';
 import 'package:anx_reader/config/shared_preference_provider.dart';
 import 'package:anx_reader/models/book_style.dart';
 import 'package:anx_reader/page/book_player/epub_player.dart';
 import 'package:anx_reader/widgets/reading_page/more_settings/more_settings.dart';
 import 'package:flutter/material.dart';
+
+import '../../generated/l10n.dart';
 
 
 class StyleWidget extends StatefulWidget {
@@ -23,7 +24,7 @@ class _StyleWidgetState extends State<StyleWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        widgetTitle(context.readingPageStyle, ReadingSettings.style),
+        // widgetTitle( S.of(context).reading_page_style, ReadingSettings.style),
         sliders(),
       ],
     );

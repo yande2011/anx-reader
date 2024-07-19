@@ -1,8 +1,9 @@
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:anx_reader/widgets/reading_page/widget_title.dart';
 import 'package:anx_reader/models/toc_item.dart';
 import 'package:anx_reader/page/book_player/epub_player.dart';
 import 'package:flutter/material.dart';
+
+import '../../generated/l10n.dart';
 
 
 class TocWidget extends StatelessWidget {
@@ -10,12 +11,12 @@ class TocWidget extends StatelessWidget {
     super.key,
     required this.tocItems,
     required this.epubPlayerKey,
-    required this.hideAppBarAndBottomBar,
+    required this.showOrHideAppBarAndBottomBar,
   });
 
   final List<TocItem> tocItems;
   final epubPlayerKey;
-  final hideAppBarAndBottomBar;
+  final showOrHideAppBarAndBottomBar;
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +24,15 @@ class TocWidget extends StatelessWidget {
       height: 700,
       child: Column(
         children: [
-          widgetTitle(context.readingContents, null),
+          // widgetTitle( S.of(context).reading_contents, null),
           Expanded(
             child: ListView.builder(
               itemCount: tocItems.length,
               itemBuilder: (context, index) {
                 return TocItemWidget(
                     tocItem: tocItems[index],
-                    hideAppBarAndBottomBar: hideAppBarAndBottomBar,
-                    epubPlayerKey: epubPlayerKey);
+                    epubPlayerKey: epubPlayerKey,
+                showOrHideAppBarAndBottomBar: showOrHideAppBarAndBottomBar,);
               },
             ),
           ),
@@ -43,14 +44,15 @@ class TocWidget extends StatelessWidget {
 
 class TocItemWidget extends StatefulWidget {
   final TocItem tocItem;
-  final Function hideAppBarAndBottomBar;
   final GlobalKey<EpubPlayerState> epubPlayerKey;
+  final showOrHideAppBarAndBottomBar;
 
   const TocItemWidget(
       {super.key,
       required this.tocItem,
-      required this.hideAppBarAndBottomBar,
-      required this.epubPlayerKey});
+      required this.epubPlayerKey,
+      required this.showOrHideAppBarAndBottomBar
+      });
 
   @override
   _TocItemWidgetState createState() => _TocItemWidgetState();
@@ -83,8 +85,9 @@ class _TocItemWidgetState extends State<TocItemWidget> {
               // SizedBox(width: 1),
               TextButton(
                 onPressed: () {
-                  widget.hideAppBarAndBottomBar(false);
                   widget.epubPlayerKey.currentState!.goTo(widget.tocItem.href);
+                  widget.showOrHideAppBarAndBottomBar(false);
+                  Navigator.of(context).pop();
                 },
                 style: ButtonStyle(
                   padding: WidgetStateProperty.all(EdgeInsets.zero),
@@ -116,8 +119,8 @@ class _TocItemWidgetState extends State<TocItemWidget> {
               padding: const EdgeInsets.only(left: 26.0),
               child: TocItemWidget(
                   tocItem: subItem,
-                  hideAppBarAndBottomBar: widget.hideAppBarAndBottomBar,
-                  epubPlayerKey: widget.epubPlayerKey),
+                  epubPlayerKey: widget.epubPlayerKey,
+              showOrHideAppBarAndBottomBar: widget.showOrHideAppBarAndBottomBar,),
             ),
         Divider(
             indent: 20,

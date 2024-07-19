@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:anx_reader/config/shared_preference_provider.dart';
 import 'package:anx_reader/dao/book_note.dart';
-import 'package:anx_reader/l10n/localization_extension.dart';
 import 'package:anx_reader/models/book_style.dart';
 import 'package:anx_reader/models/read_theme.dart';
 import 'package:anx_reader/page/reading_page.dart';
@@ -14,6 +13,8 @@ import 'package:anx_reader/widgets/reading_page/more_settings/page_turning/types
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+
+import '../../generated/l10n.dart';
 
 class EpubPlayer extends StatefulWidget {
   final String content;
@@ -106,21 +107,23 @@ class EpubPlayerState extends State<EpubPlayer> {
         handlerName: 'getCurrentInfo',
         callback: (args) {
           Map<String, dynamic> currentInfo = args[0];
-          progress = (currentInfo['progress'] as num).toDouble();
+          if (currentInfo.containsKey('progress') && currentInfo['progress'] != null) {
+            progress = (currentInfo['progress'] as num).toDouble();
+          }
           chapterCurrentPage = currentInfo['chapterCurrentPage'];
           chapterTotalPage = currentInfo['chapterTotalPage'];
           chapterTitle = currentInfo['chapterTitle'];
           chapterHref = currentInfo['chapterHref'];
         });
 
-    // _webViewController.addJavaScriptHandler(
-    //     handlerName: 'onRelocated',
-    //     callback: (args) {
-    //       // BookStyle bookStyle = Prefs().bookStyle;
-    //       // changeStyle(bookStyle);
-    //       // ReadTheme readTheme = Prefs().readTheme;
-    //       // changeTheme(readTheme);
-    //     });
+    _webViewController.addJavaScriptHandler(
+        handlerName: 'onRelocated',
+        callback: (args) {
+          BookStyle bookStyle = Prefs().bookStyle;
+          changeStyle(bookStyle);
+          ReadTheme readTheme = Prefs().readTheme;
+          changeTheme(readTheme);
+        });
   }
 
   void clickHandlers() {
@@ -293,12 +296,12 @@ class EpubPlayerState extends State<EpubPlayer> {
       menuItems: [
         ContextMenuItem(
           id: 1,
-          title: context.readingPageCopy,
+          title: S.of(context).reading_page_copy,
           action: () async {},
         ),
         ContextMenuItem(
           id: 2,
-          title: context.readingPageExcerpt,
+          title: S.of(context).reading_page_excerpt,
           action: () async {
             _webViewController.evaluateJavascript(source: 'excerptHandler()');
           },
