@@ -1,4 +1,5 @@
 import 'package:anx_reader/page/home_page/bookshelf_page.dart';
+import 'package:anx_reader/page/home_page/bookstore_page.dart';
 import 'package:anx_reader/page/home_page/notes_page.dart';
 import 'package:anx_reader/page/home_page/settings_page.dart';
 import 'package:anx_reader/page/home_page/statistics_page.dart';
@@ -18,10 +19,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
   final List<Widget> _pages = [
+    const LibraryPage(),
     const BookshelfPage(),
-    const StatisticPage(),
     const NotesPage(),
     const SettingsPage(),
   ];
@@ -91,8 +92,8 @@ class _HomePageState extends State<HomePage> {
 
   List<Map<String, dynamic>> _navBarItems() {
     return [
+      {'icon': Icons.library_books, 'label':  S.of(context).navBar_store},
       {'icon': Icons.book, 'label': S.of(context).navBarBookshelf},
-      {'icon': Icons.show_chart, 'label':  S.of(context).navBarStatistics},
       {'icon': Icons.note, 'label':  S.of(context).navBarNotes},
       {'icon': Icons.settings, 'label':  S.of(context).navBarSettings},
     ];

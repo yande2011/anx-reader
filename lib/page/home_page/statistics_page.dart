@@ -22,9 +22,9 @@ class _StatisticPageState extends State<StatisticPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(context.navBarStatistics),
-      // ),
+      appBar: AppBar(
+        title: Text(S.of(context).navBarStatistics),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(left: 10, right: 10, top: 10),

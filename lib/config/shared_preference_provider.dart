@@ -18,6 +18,19 @@ class Prefs extends ChangeNotifier {
     initPrefs();
   }
 
+  bool get isScrollMode {
+    return prefs.getBool('isScrollMode') ?? false;
+  }
+
+  get webdavCookie {
+    return prefs.getString('webdavCookie') ?? '';
+  }
+
+  Future<void> saveScrollMode(bool isScrollMode) async {
+    await prefs.setBool('isScrollMode', isScrollMode);
+    notifyListeners();
+  }
+
   Future<void> initPrefs() async {
     prefs = await SharedPreferences.getInstance();
     saveBeginDate();
@@ -169,5 +182,10 @@ class Prefs extends ChangeNotifier {
 
   int get pageTurningType {
     return prefs.getInt('pageTurningType') ?? 0;
+  }
+
+  Future<void> setWebdavCookie(String cookie) async {
+    await prefs.setString('webdavCookie', cookie);
+    notifyListeners();
   }
 }

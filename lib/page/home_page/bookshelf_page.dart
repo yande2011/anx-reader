@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:anx_reader/dao/book.dart';
 import 'package:anx_reader/models/book.dart';
+import 'package:anx_reader/page/home_page/statistics_page.dart';
 import 'package:anx_reader/service/book.dart';
 import 'package:anx_reader/utils/webdav/common.dart';
 import 'package:anx_reader/utils/webdav/show_status.dart';
@@ -110,6 +111,14 @@ class BookshelfPageState extends State<BookshelfPage>
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: _importBook,
+          ),
+          IconButton(
+            icon: const Icon(Icons.show_chart),
+            onPressed: () {
+              Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, _, __){
+                return const StatisticPage();
+              }));
+            },
           ),
         ],
       ),

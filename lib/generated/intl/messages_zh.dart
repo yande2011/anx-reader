@@ -54,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "common_success": MessageLookupByLibrary.simpleMessage("成功"),
         "common_update": MessageLookupByLibrary.simpleMessage("更新"),
         "common_uploading": MessageLookupByLibrary.simpleMessage("上传中"),
+        "login_success": MessageLookupByLibrary.simpleMessage("登录成功"),
         "navBarBookshelf": MessageLookupByLibrary.simpleMessage("书架"),
         "navBarNotes": MessageLookupByLibrary.simpleMessage("笔记"),
         "navBarSettings": MessageLookupByLibrary.simpleMessage("设置"),
@@ -84,6 +85,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "reading_page_style": MessageLookupByLibrary.simpleMessage("样式"),
         "reading_page_theme": MessageLookupByLibrary.simpleMessage("主题"),
         "service_import_success": MessageLookupByLibrary.simpleMessage("导入成功"),
+        "settings": MessageLookupByLibrary.simpleMessage("设置"),
         "settings_advanced": MessageLookupByLibrary.simpleMessage("高级"),
         "settings_advanced_clear_log_when_start":
             MessageLookupByLibrary.simpleMessage("启动时清空日志"),
@@ -103,18 +105,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings_dark_mode": MessageLookupByLibrary.simpleMessage("深色模式"),
         "settings_light_mode": MessageLookupByLibrary.simpleMessage("浅色模式"),
         "settings_moreSettings": MessageLookupByLibrary.simpleMessage("更多设置"),
-        "settings_sync": MessageLookupByLibrary.simpleMessage("同步"),
+        "settings_sync": MessageLookupByLibrary.simpleMessage("帐户"),
         "settings_sync_enable_webdav":
             MessageLookupByLibrary.simpleMessage("启用 WebDAV"),
-        "settings_sync_webdav": MessageLookupByLibrary.simpleMessage("WebDAV"),
+        "settings_sync_webdav": MessageLookupByLibrary.simpleMessage("服务器"),
         "settings_sync_webdav_password":
             MessageLookupByLibrary.simpleMessage("密码"),
         "settings_sync_webdav_sync_now":
             MessageLookupByLibrary.simpleMessage("立即同步"),
         "settings_sync_webdav_test_connection":
-            MessageLookupByLibrary.simpleMessage("测试连接"),
+            MessageLookupByLibrary.simpleMessage("登陆"),
         "settings_sync_webdav_url":
-            MessageLookupByLibrary.simpleMessage("WebDAV 地址（URL）"),
+            MessageLookupByLibrary.simpleMessage("服务器地址（URL）"),
         "settings_sync_webdav_username":
             MessageLookupByLibrary.simpleMessage("用户名"),
         "settings_system_mode": MessageLookupByLibrary.simpleMessage("系统模式"),

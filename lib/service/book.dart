@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:anx_reader/dao/book.dart';
 import 'package:anx_reader/main.dart';
 import 'package:anx_reader/models/book.dart';
+import 'package:anx_reader/models/server_book.dart';
 import 'package:anx_reader/utils/get_base_path.dart';
 import 'package:anx_reader/utils/log/common.dart';
 import 'package:anx_reader/page/reading_page.dart';
 import 'package:anx_reader/utils/import_book.dart';
+import 'package:anx_reader/utils/server/server_api.dart';
 import 'package:anx_reader/utils/toast/common.dart';
 import 'package:epubx/epubx.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +34,64 @@ Future<Book> importBook(File file) async {
 
     await file.copy(filePath);
     saveImageToLocal(cover, coverPath);
+
+    Book book = Book(
+        id: -1,
+        title: title,
+        coverPath: relativeCoverPath,
+        filePath: relativeFilePath,
+        lastReadPosition: '',
+        readingPercentage: 0,
+        author: author,
+        isDeleted: false,
+        rating: 0.0,
+        createTime: DateTime.now(),
+        updateTime: DateTime.now());
+    book.id = await insertBook(book);
+    AnxToast.show(S.of(navigatorKey.currentContext!).service_import_success);
+    return book;
+  } catch (e) {
+    AnxToast.show(
+        'Failed to import book, please check if the book is valid\n[$e]',
+        duration: 5000);
+    AnxLog.severe('Failed to import book\n$e');
+    return Book(
+      id: -1,
+      title: 'Unknown',
+      coverPath: '',
+      filePath: '',
+      lastReadPosition: '',
+      readingPercentage: 0,
+      author: '',
+      isDeleted: false,
+      rating: 0.0,
+      createTime: DateTime.now(),
+      updateTime: DateTime.now(),
+    );
+  }
+}
+
+
+Future<Book> importServerBook(ServerBook serverBook, File file) async {
+  try {
+    EpubBookRef epubBookRef = await EpubReader.openBook(file.readAsBytesSync());
+    String author = serverBook.author;
+    String title = serverBook.title;
+
+    final cover = await epubBookRef.readCover();
+    final newBookName =
+    '${title.length > 20 ? title.substring(0, 20) : title}-${DateTime.now().millisecond.toString()}'
+        .replaceAll(' ', '_');
+
+    final relativeFilePath = 'file/$newBookName.epub';
+    final filePath = getBasePath(relativeFilePath);
+    final relativeCoverPath = 'cover/$newBookName.jpg';
+    final coverPath = getBasePath(relativeCoverPath);
+
+    await file.copy(filePath);
+    File? coverFile = await downloadTmpCover(serverBook.img);
+    await coverFile?.copy(coverPath);
+    coverFile?.delete();
 
     Book book = Book(
         id: -1,

@@ -62,6 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "common_success": MessageLookupByLibrary.simpleMessage("Success"),
         "common_update": MessageLookupByLibrary.simpleMessage("Update"),
         "common_uploading": MessageLookupByLibrary.simpleMessage("Uploading"),
+        "login_success": MessageLookupByLibrary.simpleMessage("Login success"),
         "navBarBookshelf": MessageLookupByLibrary.simpleMessage("Bookshelf"),
         "navBarNotes": MessageLookupByLibrary.simpleMessage("Notes"),
         "navBarSettings": MessageLookupByLibrary.simpleMessage("Settings"),
@@ -98,6 +99,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "reading_page_theme": MessageLookupByLibrary.simpleMessage("Theme"),
         "service_import_success":
             MessageLookupByLibrary.simpleMessage("Import success"),
+        "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "settings_advanced": MessageLookupByLibrary.simpleMessage("Advanced"),
         "settings_advanced_clear_log_when_start":
             MessageLookupByLibrary.simpleMessage("Clear log when start"),
@@ -120,18 +122,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings_light_mode": MessageLookupByLibrary.simpleMessage("Light"),
         "settings_moreSettings":
             MessageLookupByLibrary.simpleMessage("More Settings"),
-        "settings_sync": MessageLookupByLibrary.simpleMessage("Sync"),
+        "settings_sync": MessageLookupByLibrary.simpleMessage("Account"),
         "settings_sync_enable_webdav":
             MessageLookupByLibrary.simpleMessage("Enable WebDAV"),
-        "settings_sync_webdav": MessageLookupByLibrary.simpleMessage("WebDAV"),
+        "settings_sync_webdav": MessageLookupByLibrary.simpleMessage("Servers"),
         "settings_sync_webdav_password":
             MessageLookupByLibrary.simpleMessage("Password"),
         "settings_sync_webdav_sync_now":
             MessageLookupByLibrary.simpleMessage("Sync Now"),
         "settings_sync_webdav_test_connection":
-            MessageLookupByLibrary.simpleMessage("Test Connection"),
+            MessageLookupByLibrary.simpleMessage("SignIn"),
         "settings_sync_webdav_url":
-            MessageLookupByLibrary.simpleMessage("WebDAV URL"),
+            MessageLookupByLibrary.simpleMessage("Server URL"),
         "settings_sync_webdav_username":
             MessageLookupByLibrary.simpleMessage("Username"),
         "settings_system_mode": MessageLookupByLibrary.simpleMessage("System"),

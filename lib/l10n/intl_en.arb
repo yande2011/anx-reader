@@ -102,16 +102,16 @@
   "webdav_download": "Download from WebDAV",
   "webdav_upload": "Upload to WebDAV",
 
-
-
-  "settings_sync": "Sync",
-  "settings_sync_webdav": "WebDAV",
+  "settings": "Settings",
+  "settings_sync": "Account",
+  "settings_sync_webdav": "Servers",
   "settings_sync_enable_webdav": "Enable WebDAV",
-  "settings_sync_webdav_url": "WebDAV URL",
+  "settings_sync_webdav_url": "Server URL",
   "settings_sync_webdav_username": "Username",
   "settings_sync_webdav_password": "Password",
-  "settings_sync_webdav_test_connection": "Test Connection",
+  "settings_sync_webdav_test_connection": "SignIn",
   "settings_sync_webdav_sync_now": "Sync Now",
+  "login_success": "Login success",
 
   "settings_advanced": "Advanced",
   "settings_advanced_log": "Log",

@@ -103,16 +103,16 @@
   "webdav_download": "从 WebDAV 下载",
   "webdav_upload": "上传到 WebDAV",
 
-
-
-  "settings_sync": "同步",
-  "settings_sync_webdav": "WebDAV",
+  "settings": "设置",
+  "settings_sync": "帐户",
+  "settings_sync_webdav": "服务器",
   "settings_sync_enable_webdav": "启用 WebDAV",
-  "settings_sync_webdav_url": "WebDAV 地址（URL）",
+  "settings_sync_webdav_url": "服务器地址（URL）",
   "settings_sync_webdav_username": "用户名",
   "settings_sync_webdav_password": "密码",
-  "settings_sync_webdav_test_connection": "测试连接",
+  "settings_sync_webdav_test_connection": "登陆",
   "settings_sync_webdav_sync_now": "立即同步",
+  "login_success": "登录成功",
 
   "settings_advanced": "高级",
   "settings_advanced_log": "日志",

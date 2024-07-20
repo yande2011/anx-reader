@@ -20,11 +20,13 @@ class EpubPlayer extends StatefulWidget {
   final String content;
   final int bookId;
   final Function showOrHideAppBarAndBottomBar;
+  final Function onTextChanged;
 
   const EpubPlayer(
       {super.key,
       required this.content,
       required this.showOrHideAppBarAndBottomBar,
+        required this.onTextChanged,
       required this.bookId});
 
   @override
@@ -124,6 +126,11 @@ class EpubPlayerState extends State<EpubPlayer> {
           ReadTheme readTheme = Prefs().readTheme;
           changeTheme(readTheme);
         });
+
+    _webViewController.addJavaScriptHandler(handlerName: 'onLocationChanged', callback: (args) {
+      String text = args[0];
+      widget.onTextChanged(text);
+    });
   }
 
   void clickHandlers() {
@@ -571,5 +578,11 @@ class EpubPlayerState extends State<EpubPlayer> {
     changeStyle();
     setClickEvent();
   ''');
+  }
+
+  switchMode(bool isScrollMode) {
+    _webViewController.evaluateJavascript(source: '''
+      setFlowMode($isScrollMode); 
+    ''');
   }
 }

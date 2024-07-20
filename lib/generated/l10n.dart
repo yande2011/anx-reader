@@ -970,20 +970,30 @@ class S {
     );
   }
 
-  /// `Sync`
+  /// `Settings`
+  String get settings {
+    return Intl.message(
+      'Settings',
+      name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account`
   String get settings_sync {
     return Intl.message(
-      'Sync',
+      'Account',
       name: 'settings_sync',
       desc: '',
       args: [],
     );
   }
 
-  /// `WebDAV`
+  /// `Servers`
   String get settings_sync_webdav {
     return Intl.message(
-      'WebDAV',
+      'Servers',
       name: 'settings_sync_webdav',
       desc: '',
       args: [],
@@ -1000,10 +1010,10 @@ class S {
     );
   }
 
-  /// `WebDAV URL`
+  /// `Server URL`
   String get settings_sync_webdav_url {
     return Intl.message(
-      'WebDAV URL',
+      'Server URL',
       name: 'settings_sync_webdav_url',
       desc: '',
       args: [],
@@ -1030,10 +1040,10 @@ class S {
     );
   }
 
-  /// `Test Connection`
+  /// `SignIn`
   String get settings_sync_webdav_test_connection {
     return Intl.message(
-      'Test Connection',
+      'SignIn',
       name: 'settings_sync_webdav_test_connection',
       desc: '',
       args: [],
@@ -1045,6 +1055,16 @@ class S {
     return Intl.message(
       'Sync Now',
       name: 'settings_sync_webdav_sync_now',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login success`
+  String get login_success {
+    return Intl.message(
+      'Login success',
+      name: 'login_success',
       desc: '',
       args: [],
     );

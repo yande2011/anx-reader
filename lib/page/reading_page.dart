@@ -49,6 +49,8 @@ class ReadingPageState extends State<ReadingPage> with WidgetsBindingObserver {
   Timer? _awakeTimer;
   bool _showAppAndBottomBar = false;
   int bookDrawIndex = 0;
+  String? _currentText;
+  bool _isScrollMode = false;
 
 
   @override
@@ -63,6 +65,7 @@ class ReadingPageState extends State<ReadingPage> with WidgetsBindingObserver {
     _book = widget.book;
     _bookStyle = Prefs().bookStyle;
     _readTheme = Prefs().readTheme;
+    _isScrollMode = Prefs().isScrollMode;
     loadContent();
     super.initState();
   }
@@ -102,9 +105,15 @@ class ReadingPageState extends State<ReadingPage> with WidgetsBindingObserver {
 
   void loadContent() {
     var content = generateIndexHtml(
-        widget.book, _bookStyle, _readTheme, widget.book.lastReadPosition);
+        widget.book, _bookStyle, _readTheme, _isScrollMode, widget.book.lastReadPosition);
     setState(() {
       _content = content;
+    });
+  }
+
+  void setCurrentText(String text) {
+    setState(() {
+      _currentText = text;
     });
   }
 
@@ -123,10 +132,7 @@ class ReadingPageState extends State<ReadingPage> with WidgetsBindingObserver {
       PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
-          return DefaultTabController(
-            length: 2,
-            child: BookDrawer(tocItems: _tocItems, epubPlayerKey: _epubPlayerKey, showOrHideAppBarAndBottomBar: showOrHideAppBarAndBottomBar,currentPage: index, book: _book,),
-          );
+          return BookDrawer(tocItems: _tocItems, epubPlayerKey: _epubPlayerKey, showOrHideAppBarAndBottomBar: showOrHideAppBarAndBottomBar,currentPage: index, book: _book,);
         },
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           var begin = Offset(-1.0, 0.0);
@@ -139,6 +145,26 @@ class ReadingPageState extends State<ReadingPage> with WidgetsBindingObserver {
           );
         },
       ),
+    );
+  }
+
+  void _showSwitchDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('切换视图模式'),
+          content: Text(_isScrollMode ? '已切换到翻页模式' : '已切换到滚动模式'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('确定'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -334,6 +360,7 @@ class ReadingPageState extends State<ReadingPage> with WidgetsBindingObserver {
                 content: _content!,
                 bookId: _book.id,
                 showOrHideAppBarAndBottomBar: showOrHideAppBarAndBottomBar,
+                onTextChanged: setCurrentText,
               ),
               if (_showAppAndBottomBar)
                 Positioned(
@@ -403,22 +430,33 @@ class ReadingPageState extends State<ReadingPage> with WidgetsBindingObserver {
                             IconButton(
                               icon: Icon(
                                 Theme.of(context).brightness == Brightness.light
-                                    ? Icons.dark_mode
-                                    : Icons.light_mode,
+                                    ? Icons.light_mode : Icons.dark_mode
                               ),
                               onPressed: ()  {
                                 // 切换主题的逻辑
                                 changeTheme(context);
                               },
                             ),
+                            // IconButton(
+                            //   icon: Icon(Icons.keyboard_voice),
+                            //   onPressed: () async {
+                            //     //
+                            //     await speakHandler();
+                            //   },
+                            // ),
                             IconButton(
-                              icon: Icon(Icons.keyboard_voice),
-                              onPressed: () {
-                                // 切换主题的逻辑
+                              icon: Icon(_isScrollMode ?  Icons.view_agenda_sharp : Icons.view_carousel),
+                              onPressed: () async {
+                                await _epubPlayerKey.currentState!.switchMode(!_isScrollMode);
+                                await Prefs().saveScrollMode(!_isScrollMode);
+                                setState(() {
+                                  _isScrollMode = !_isScrollMode;
+                                });
+                                //_showSwitchDialog();
                               },
                             ),
                             IconButton(
-                              icon: const Icon(Icons.toc),
+                              icon: const Icon(Icons.menu_book),
                               onPressed: () {
                                 tocHandler();
                               },
@@ -459,4 +497,22 @@ class ReadingPageState extends State<ReadingPage> with WidgetsBindingObserver {
       );
     }
   }
+
+  // Future<void> speakHandler() async {
+  //     if (flutterTts == null) {
+  //       flutterTts = FlutterTts();
+  //       if (Platform.isIOS) {
+  //         await flutterTts?.setSharedInstance(true);
+  //         await flutterTts?.setIosAudioCategory(IosTextToSpeechAudioCategory.ambient,
+  //             [
+  //               IosTextToSpeechAudioCategoryOptions.allowBluetooth,
+  //               IosTextToSpeechAudioCategoryOptions.allowBluetoothA2DP,
+  //               IosTextToSpeechAudioCategoryOptions.mixWithOthers
+  //             ],
+  //             IosTextToSpeechAudioMode.voicePrompt
+  //         );
+  //       }
+  //       flutterTts?.speak(_currentText!);
+  //     }
+  // }
 }

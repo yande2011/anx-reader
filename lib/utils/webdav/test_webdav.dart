@@ -1,3 +1,4 @@
+import 'package:anx_reader/utils/server/server_api.dart';
 import 'package:anx_reader/utils/webdav/common.dart';
 import 'package:anx_reader/config/shared_preference_provider.dart';
 import 'package:anx_reader/main.dart';
@@ -29,7 +30,7 @@ Future<Map<String, dynamic>> testWebdavInfo(Map webdavInfo) async {
   }
 }
 
-Future<void> testWebdav(Map webdavInfo) async {
+Future<bool> login(Map userInfo) async {
   final context = navigatorKey.currentContext!;
   Widget buildAlertDialog(String title, String content) {
     return AlertDialog(
@@ -46,24 +47,26 @@ Future<void> testWebdav(Map webdavInfo) async {
     );
   }
 
-  final result = await testWebdavInfo(webdavInfo);
+  final result = await signIn(userInfo);
 
-  if (result['status']) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return buildAlertDialog(
-            S.of(context).common_success,  S.of(context).webdav_connection_success);
-      },
-    );
+  if (result['success']) {
+    // showDialog(
+    //   context: context,
+    //   builder: (context) {
+    //     return buildAlertDialog(
+    //         S.of(context).common_success,  S.of(context).webdav_connection_success);
+    //   },
+    // );
+    return true;
   } else {
     showDialog(
       context: context,
       builder: (context) {
         return buildAlertDialog( S.of(context).common_failed,
-            '${ S.of(context).webdav_connection_failed}\n${result['error']}');
+            '${ S.of(context).webdav_connection_failed}\n${result['message']}');
       },
     );
+    return false;
   }
 }
 

@@ -1,3 +1,5 @@
+import 'package:anx_reader/utils/server/server_api.dart';
+import 'package:anx_reader/utils/toast/common.dart';
 import 'package:anx_reader/utils/webdav/common.dart';
 import 'package:anx_reader/config/shared_preference_provider.dart';
 import 'package:anx_reader/utils/webdav/test_webdav.dart';
@@ -51,28 +53,8 @@ class _SubSyncSettingsState extends State<SubSyncSettings> {
       isMobile: widget.isMobile,
       sections: [
         SettingsSection(
-          title: Text(S.of(context).settings_sync_webdav),
+          // title: Text(S.of(context).settings_sync_webdav),
           tiles: [
-            SettingsTile.switchTile(
-                leading: const Icon(Icons.cached),
-                initialValue: Prefs().webdavStatus,
-                onToggle: (bool value) async {
-                  setState(() {
-                    Prefs().saveWebdavStatus(value);
-                  });
-                  if (value) {
-                    bool result = await testEnableWebdav();
-                    if (!result) {
-                      setState(() {
-                        Prefs().saveWebdavStatus(!value);
-                      });
-                    } else {
-                      AnxWebdav.init();
-                      chooseDirection();
-                    }
-                  }
-                },
-                title: Text(S.of(context).settings_sync_enable_webdav)),
             SettingsTile.navigation(
                 title: Text(S.of(context).settings_sync_webdav),
                 leading: const Icon(Icons.cloud),
@@ -138,19 +120,15 @@ void showWebdavDialog(BuildContext context) {
                   webdavInfo['url'] = webdavUrlController.text.trim();
                   webdavInfo['username'] = webdavUsernameController.text;
                   webdavInfo['password'] = webdavPasswordController.text;
-                  testWebdav(webdavInfo);
+                  prefs(webdavInfo);
+                  bool result = await login(webdavInfo);
+                  if (result) {
+                    AnxToast.show(S.of(context).login_success);
+                    Navigator.pop(context);
+                    await getUserInfo();
+                  }
                 },
                 child: Text(S.of(context).settings_sync_webdav_test_connection),
-              ),
-              TextButton(
-                onPressed: () {
-                  webdavInfo['url'] = webdavUrlController.text.trim();
-                  webdavInfo['username'] = webdavUsernameController.text;
-                  webdavInfo['password'] = webdavPasswordController.text;
-                  prefs(webdavInfo);
-                  Navigator.pop(context);
-                },
-                child: Text(S.of(context).common_save),
               ),
             ],
           ),

@@ -5,7 +5,7 @@ import 'package:anx_reader/models/book_style.dart';
 import 'package:anx_reader/service/book_player/book_player_server.dart';
 
 String generateIndexHtml(
-    Book book, BookStyle style, ReadTheme theme, String cfi) {
+    Book book, BookStyle style, ReadTheme theme, bool isScroll, String cfi) {
   String bookPath =
       'http://localhost:${Server().port}/book/${getBasePath(book.filePath)}';
   String epubJs = 'http://localhost:${Server().port}/js/epub.js';
@@ -54,11 +54,17 @@ String generateIndexHtml(
     
       <script>
         var book = ePub("$bookPath")
+        var epubOptions = {}
+        if ($isScroll) {
+          epubOptions.flow = 'scrolled';
+          epubOptions.manager = 'continuous';
+        }
         var rendition = book.renderTo("viewer", {
             width: window.innerWidth,
             height: window.innerHeight,
             allowScriptedContent: true,
             gap: ${style.sideMargin},
+            ...epubOptions,
         })
         var refreshProgress
         
@@ -345,6 +351,14 @@ String generateIndexHtml(
           window.flutter_inappwebview.callHandler('onRelocated');
         }
         
+        onLocationChanged = function(loc) {
+          const range = rendition.getRange(rendition.currentLocation().start.cfi)
+          const endRange = rendition.getRange(rendition.currentLocation().end.cfi)
+          range.setEnd(endRange.startContainer, endRange.startOffset)
+          let text = range.toString();
+          window.flutter_inappwebview.callHandler('onLocationChanged', text);
+        }
+        
     // render book
         var renderBook = async function() {
           if ('$cfi' !== '') {
@@ -363,6 +377,10 @@ String generateIndexHtml(
             refreshProgress();
             setClickEvent();
             // window.flutter_inappwebview.callHandler('onRelocated', locations.start.index);
+          });
+          
+          rendition.on('locationChanged', function(location) {
+            onLocationChanged(location);
           });
         }  
 
@@ -437,6 +455,14 @@ String generateIndexHtml(
         
         var setAllAnnotations = function () {
           window.flutter_inappwebview.callHandler('getAllAnnotations', null);
+        };
+        
+        var setFlowMode = function (scroll) {
+          if (scroll) {
+            rendition.flow('scrolled-continuous');
+          } else {
+            rendition.flow('paginated');
+          }
         };
         
         var addABookNote = function(bookNote){
